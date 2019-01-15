@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/root/server_monitor/')
 from config import MYSQL_CONFIG
 import pymysql
 
@@ -21,7 +23,7 @@ class Mysql:
         else:
             self.cur.execute("create database %s"%database_name)
 
-    def use_database(self, database_name)
+    def use_database(self, database_name):
         self.cur.execute("use %s"%databases_name)
 
     def create_table(self, table_name):
@@ -84,7 +86,7 @@ class Mysql:
     def rollback():
         self.conn.rollback()
 
-def trigger_init(ip)
+def trigger_init(ip):
     mysql = Mysql()
     name = ip + '_monitor'
     mysql.create_database(name)
@@ -95,4 +97,4 @@ def trigger_init(ip)
 
 
 if __name__ == '__main__':
-    
+    print("sql") 
