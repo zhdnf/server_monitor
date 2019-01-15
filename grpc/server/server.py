@@ -14,6 +14,10 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 class Probe(systeminfo_pb2_grpc.SysinfoServicer):
     def GetSysInfo(self, request, context):
+
+        print(request.cpu*10, request.vmem*10,request.smem*10, request.disk*10, request.disk_i*10, request.disk_o*10,net_i*10, net_o*10)
+
+
         time_l = time.time()
 
         ms = mysql.Mysql()
@@ -44,6 +48,7 @@ class Probe(systeminfo_pb2_grpc.SysinfoServicer):
             row['name'] = i.name
             row['cpu'] = i.cpu
             row['mem'] = i.mem
+            ip = i.ip
 
             res.append(row)
 
@@ -52,7 +57,7 @@ class Probe(systeminfo_pb2_grpc.SysinfoServicer):
         ms = mysql.Mysql()
 
         query_sql = "select * from user where ip = '%s'"
-        query_array = (request.ip,)
+        query_array = (ip,)
         res_sql = ms.query(query_sql, query_array)
 
         insert_sql = "insert into sysinfo values(%s, %s, %s, %s, %s, %s)"
