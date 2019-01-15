@@ -33,11 +33,38 @@ class Probe(systeminfo_pb2_grpc.SysinfoServicer):
         ms.close()
 
         return systeminfo_pb2.Response(action="OK")
-
+    
     def GetProcesses(self, request_iterator, context):
-        
+        time_l  = time.time()
+        res = []
+
         for i in request_iterator:
-            print(i)
+            row = {}
+            row['pid'] = i.pid
+            row['name'] = i.name
+            row['cpu'] = i.cpu
+            row['mem'] = i.mem
+
+            res.append(row)
+
+        res.sort(key = lambda x: x["mem"], reverse=True) 
+        
+        ms = mysql.Mysql()
+
+        query_sql = "select * from user where ip = '%s'"
+        query_array = (request.ip,)
+        res_sql = ms.query(query_sql, query_array)
+
+        insert_sql = "insert into sysinfo values(%s, %s, %s, %s, %s, %s)"
+
+        for i in res[0:5]:
+            insert_array = (res_sql[0]['uid'], i['pid'], i['pname'],
+            i['pcpu'],i['pmem'], time_l)
+
+            ms.insert_array(insert_sql, insert_array)
+
+        ms.close()
+
         return systeminfo_pb2.Response(action="OK")
 
 
