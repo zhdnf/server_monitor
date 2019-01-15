@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x10systeminfo.proto\"&\n\x08Response\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0e\n\x06\x61\x63tion\x18\x02 \x01(\t\"J\n\x07Process\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0b\n\x03pid\x18\x02 \x01(\x05\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0b\n\x03\x63pu\x18\x04 \x01(\x02\x12\x0b\n\x03mem\x18\x05 \x01(\x02\"\"\n\x07SysInfo\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0b\n\x03\x63pu\x18\x02 \x01(\x02\x32W\n\x07Sysinfo\x12#\n\nGetSysInfo\x12\x08.SysInfo\x1a\t.Response\"\x00\x12\'\n\x0cGetProcesses\x12\x08.Process\x1a\t.Response\"\x00(\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x10systeminfo.proto\"\x1a\n\x08Response\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\"J\n\x07Process\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0b\n\x03pid\x18\x02 \x01(\x05\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0b\n\x03\x63pu\x18\x04 \x01(\x02\x12\x0b\n\x03mem\x18\x05 \x01(\x02\"\x8a\x01\n\x07SysInfo\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0b\n\x03\x63pu\x18\x02 \x01(\x02\x12\x0c\n\x04vmem\x18\x03 \x01(\x02\x12\x0c\n\x04smem\x18\x04 \x01(\x02\x12\x0c\n\x04\x64isk\x18\x05 \x01(\x02\x12\x0e\n\x06\x64isk_i\x18\x06 \x01(\x02\x12\x0e\n\x06\x64iks_o\x18\x07 \x01(\x02\x12\r\n\x05net_i\x18\x08 \x01(\x02\x12\r\n\x05net_o\x18\t \x01(\x02\x32W\n\x07Sysinfo\x12#\n\nGetSysInfo\x12\x08.SysInfo\x1a\t.Response\"\x00\x12\'\n\x0cGetProcesses\x12\x08.Process\x1a\t.Response\"\x00(\x01\x62\x06proto3')
 )
 
 
@@ -33,15 +33,8 @@ _RESPONSE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='ip', full_name='Response.ip', index=0,
+      name='action', full_name='Response.action', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='action', full_name='Response.action', index=1,
-      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -59,7 +52,7 @@ _RESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=20,
-  serialized_end=58,
+  serialized_end=46,
 )
 
 
@@ -117,8 +110,8 @@ _PROCESS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=60,
-  serialized_end=134,
+  serialized_start=48,
+  serialized_end=122,
 )
 
 
@@ -143,6 +136,55 @@ _SYSINFO = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='vmem', full_name='SysInfo.vmem', index=2,
+      number=3, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='smem', full_name='SysInfo.smem', index=3,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='disk', full_name='SysInfo.disk', index=4,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='disk_i', full_name='SysInfo.disk_i', index=5,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='diks_o', full_name='SysInfo.diks_o', index=6,
+      number=7, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='net_i', full_name='SysInfo.net_i', index=7,
+      number=8, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='net_o', full_name='SysInfo.net_o', index=8,
+      number=9, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -155,8 +197,8 @@ _SYSINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=136,
-  serialized_end=170,
+  serialized_start=125,
+  serialized_end=263,
 )
 
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
@@ -193,8 +235,8 @@ _SYSINFO = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=172,
-  serialized_end=259,
+  serialized_start=265,
+  serialized_end=352,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetSysInfo',
