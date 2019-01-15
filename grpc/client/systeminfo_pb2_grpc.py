@@ -16,7 +16,7 @@ class SysinfoStub(object):
     """
     self.GetSysInfo = channel.unary_unary(
         '/Sysinfo/GetSysInfo',
-        request_serializer=systeminfo__pb2.Sysstatus.SerializeToString,
+        request_serializer=systeminfo__pb2.SysInfo.SerializeToString,
         response_deserializer=systeminfo__pb2.Response.FromString,
         )
     self.GetProcesses = channel.stream_unary(
@@ -49,7 +49,7 @@ def add_SysinfoServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'GetSysInfo': grpc.unary_unary_rpc_method_handler(
           servicer.GetSysInfo,
-          request_deserializer=systeminfo__pb2.Sysstatus.FromString,
+          request_deserializer=systeminfo__pb2.SysInfo.FromString,
           response_serializer=systeminfo__pb2.Response.SerializeToString,
       ),
       'GetProcesses': grpc.stream_unary_rpc_method_handler(

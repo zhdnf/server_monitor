@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x10systeminfo.proto\"\x1a\n\x08Response\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\">\n\x07Process\x12\x0b\n\x03pid\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03\x63pu\x18\x03 \x01(\x02\x12\x0b\n\x03mem\x18\x04 \x01(\x02\"\x18\n\tSysstatus\x12\x0b\n\x03\x63pu\x18\x01 \x01(\x02\x32Y\n\x07Sysinfo\x12%\n\nGetSysInfo\x12\n.Sysstatus\x1a\t.Response\"\x00\x12\'\n\x0cGetProcesses\x12\x08.Process\x1a\t.Response\"\x00(\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x10systeminfo.proto\"\x1a\n\x08Response\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\"J\n\x07Process\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0b\n\x03pid\x18\x02 \x01(\x05\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0b\n\x03\x63pu\x18\x04 \x01(\x02\x12\x0b\n\x03mem\x18\x05 \x01(\x02\"\x8a\x01\n\x07SysInfo\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0b\n\x03\x63pu\x18\x02 \x01(\x02\x12\x0c\n\x04vmem\x18\x03 \x01(\x02\x12\x0c\n\x04smem\x18\x04 \x01(\x02\x12\x0c\n\x04\x64isk\x18\x05 \x01(\x02\x12\x0e\n\x06\x64isk_i\x18\x06 \x01(\x02\x12\x0e\n\x06\x64iks_o\x18\x07 \x01(\x02\x12\r\n\x05net_i\x18\x08 \x01(\x02\x12\r\n\x05net_o\x18\t \x01(\x02\x32W\n\x07Sysinfo\x12#\n\nGetSysInfo\x12\x08.SysInfo\x1a\t.Response\"\x00\x12\'\n\x0cGetProcesses\x12\x08.Process\x1a\t.Response\"\x00(\x01\x62\x06proto3')
 )
 
 
@@ -64,29 +64,36 @@ _PROCESS = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='pid', full_name='Process.pid', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='Process.name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
+      name='ip', full_name='Process.ip', index=0,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='cpu', full_name='Process.cpu', index=2,
-      number=3, type=2, cpp_type=6, label=1,
+      name='pid', full_name='Process.pid', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='Process.name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cpu', full_name='Process.cpu', index=3,
+      number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='mem', full_name='Process.mem', index=3,
-      number=4, type=2, cpp_type=6, label=1,
+      name='mem', full_name='Process.mem', index=4,
+      number=5, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -104,20 +111,76 @@ _PROCESS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=48,
-  serialized_end=110,
+  serialized_end=122,
 )
 
 
-_SYSSTATUS = _descriptor.Descriptor(
-  name='Sysstatus',
-  full_name='Sysstatus',
+_SYSINFO = _descriptor.Descriptor(
+  name='SysInfo',
+  full_name='SysInfo',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='cpu', full_name='Sysstatus.cpu', index=0,
-      number=1, type=2, cpp_type=6, label=1,
+      name='ip', full_name='SysInfo.ip', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cpu', full_name='SysInfo.cpu', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='vmem', full_name='SysInfo.vmem', index=2,
+      number=3, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='smem', full_name='SysInfo.smem', index=3,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='disk', full_name='SysInfo.disk', index=4,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='disk_i', full_name='SysInfo.disk_i', index=5,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='diks_o', full_name='SysInfo.diks_o', index=6,
+      number=7, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='net_i', full_name='SysInfo.net_i', index=7,
+      number=8, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='net_o', full_name='SysInfo.net_o', index=8,
+      number=9, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -134,13 +197,13 @@ _SYSSTATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=112,
-  serialized_end=136,
+  serialized_start=125,
+  serialized_end=263,
 )
 
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 DESCRIPTOR.message_types_by_name['Process'] = _PROCESS
-DESCRIPTOR.message_types_by_name['Sysstatus'] = _SYSSTATUS
+DESCRIPTOR.message_types_by_name['SysInfo'] = _SYSINFO
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), dict(
@@ -157,12 +220,12 @@ Process = _reflection.GeneratedProtocolMessageType('Process', (_message.Message,
   ))
 _sym_db.RegisterMessage(Process)
 
-Sysstatus = _reflection.GeneratedProtocolMessageType('Sysstatus', (_message.Message,), dict(
-  DESCRIPTOR = _SYSSTATUS,
+SysInfo = _reflection.GeneratedProtocolMessageType('SysInfo', (_message.Message,), dict(
+  DESCRIPTOR = _SYSINFO,
   __module__ = 'systeminfo_pb2'
-  # @@protoc_insertion_point(class_scope:Sysstatus)
+  # @@protoc_insertion_point(class_scope:SysInfo)
   ))
-_sym_db.RegisterMessage(Sysstatus)
+_sym_db.RegisterMessage(SysInfo)
 
 
 
@@ -172,15 +235,15 @@ _SYSINFO = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=138,
-  serialized_end=227,
+  serialized_start=265,
+  serialized_end=352,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetSysInfo',
     full_name='Sysinfo.GetSysInfo',
     index=0,
     containing_service=None,
-    input_type=_SYSSTATUS,
+    input_type=_SYSINFO,
     output_type=_RESPONSE,
     serialized_options=None,
   ),
