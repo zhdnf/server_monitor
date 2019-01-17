@@ -7,32 +7,33 @@ import grpc
 import systeminfo_pb2
 import systeminfo_pb2_grpc
 
-def make_ps(pid, name, cpu, mem):
+ip = '192.168.203.166'
+grpc_ip = '192.168.203.155'
+grpc_port = '50051'
+grpc_channel = grpc_ip + ':' + grpc_port
+
+def ps_object(pid, name, cpu, mem):
     return systeminfo_pb2.Process(pid=pid, name=name, cpu=cpu, mem=mem)
 
-def generate_ps():
+def ps_generator():
     pss = psutil.process_iter()
+    
     for ps in pss:
-        yield make_ps(ps.pid, ps.name(), ps.cpu_percent(), ps.memory_percent())
+        yield ps_object(ps.pid, ps.name(), ps.cpu_percent(), ps.memory_percent())
 
-    
-def run():
-    local_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    
+def sysinfo_object():
     cpu = psutil.cpu_percent()
-    '''
-    with grpc.insecure_channel('192.168.203.155:50051') as channel:
+    return systeminfo_pb2.SysInfo(cpu=cpu)
+   
+def run():
+    
+    with grpc.insecure_channel(grpc_channel) as channel:
         stub = systeminfo_pb2_grpc.SysinfoStub(channel)
 
-        response  = stub.GetSysInfo(systeminfo_pb2.Sysstatus(cpu=cpu))
-    '''
+        response1  = stub.GetSysInfo(sysinfo_object())
+        response2  = stub.GetProcesses(ps_generator())
 
-    with grpc.insecure_channel('192.168.203.155:50051') as channel:
-        stub = systeminfo_pb2_grpc.SysinfoStub(channel)
-
-        response = stub.GetProcesses(generate_ps())
-
-        print(response.action)
+        print(response1, response2)
 
 if __name__ == '__main__':
     run()
