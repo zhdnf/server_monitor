@@ -6,19 +6,25 @@ service Sysinfo {
 }
 
 message Response {
-    string ip = 1;
-    string action = 2;
+    string action = 1;
 }
 
 message Process{
     string ip = 1;
     int32 pid = 2;
     string name = 3;
-    float cpu = 4;
-    float mem = 5;
+    float cpu = 4; //cpu percent
+    float mem = 5; //mem percent
 }
 
 message SysInfo{
     string ip = 1;
-    float cpu = 2;
-}
+    float cpu = 2; //cpu percent
+    float vmem = 3; //vituak memory percent
+    float smem = 4; //swap memory percent
+    float disk = 5; //disk
+    float disk_i = 6; //disk_i rate
+    float diks_o = 7; //disk_o rate
+    float net_i = 8; //net_i rate
+    float net_o = 9; //net_i rate
+   }
