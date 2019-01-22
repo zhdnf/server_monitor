@@ -1,5 +1,3 @@
-import pymysql
-
 # mysql config
 MYSQL_CONFIG = {
     'host' : '127.0.0.1',
@@ -8,6 +6,12 @@ MYSQL_CONFIG = {
     'passwd' : '123',
     'database' : 'server_monitor',
     'charset' : 'utf8mb4',
+}
+
+# tornado config
+TORNADO_CONFIG = {
+    "static_path" : "/root/server_monitor/app/static",
+    "template_path": "/root/server_monitor/app/templates",
 }
 
 # gprc_server
