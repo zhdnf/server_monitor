@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/open-iconic-bootstrap.min.css">
+</head>
+<body>
+    {% include 'head.html' %}
+    {% include 'left.html' %}
+    <div class="col-sm-9 col-md-10">
+    <div id="container" style="height:500%"></div>
+    </div>
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/Chart.min.js"></script>
+	<script type="text/javascript" src="/static/js/popper.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/echarts.common.min.js"></script>
+        <script type="text/javascript">
+
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+
+            myChart.setOption({
+                title: {
+                    text: '世界人口总量',
+                    subtext: '数据来自网络'
+                },
+
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+
+                grid: {
+                    left:'3%',
+                    right:'4%',
+                    bottom:'3%',
+                    containLabel:true
+                },
+
+                xAxis:{
+                    type:'value',
+                    boundaryGap:[0, 0.01]
+                },
+
+                yAxis:{
+                    type: 'category',
+                    data: []
+                },
+
+                series:[{
+                        name:'cpu',
+                        type:'bar',
+                        data:[]
+                    },{
+                        name:'mem',
+                        type:'bar',
+                        data:[]
+                    }]
+
+})
+
+           myChart.showLoading();
+
+            
+            var url = '/process';
+       
+            setInterval(function(){
+                $.post(url,{},function(ret){
+                    var ret = JSON.parse(ret);
+                    if(ret) {
+                        var nameList = [];
+                        var cpuList = [];
+                        var memList = [];
+                
+                        console.log("ret", ret);
+                        console.log("ret.name", ret[0].names) 
+                        for (var i=0; i < ret.length; i++){
+                            nameList.push(ret[i].names);
+                            cpuList.push(ret[i].cpu);
+                            memList.push(ret[i].mem);
+                         }
+                        
+                        console.log("name", nameList);
+                        console.log("cpu", cpuList);
+                        console.log("mem", memList);
+                        myChart.hideLoading();
+                        myChart.setOption({
+                            yAxis:{
+                                type: 'category',
+                                data: nameList
+                            },
+
+                            series:[{
+                                    name:'cpu',
+                                    type:'bar',
+                                    data:cpuList
+                                },{
+                                    name:'mem',
+                                    type:'bar',
+                                    data:memList
+                                }]                        
+                        });
+                    }
+            })},1000);
+
+</script>
+</body>
+</html>
