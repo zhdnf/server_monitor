@@ -3,12 +3,16 @@ sys.path.append('/root/server_monitor/')
 from config import MYSQL_CONFIG
 import pymysql
 
-# create table cpu template
-cpu_sql = " create table cpu( \
-            id int not null AUTO_INCREMENT, \
-            cpu_percent int not null, \
-            time int not null, \
-            PRIMARY KEY( id )) "
+def json_output(index, res):
+    result = []
+    for r in res:
+        row = {}
+        for i in range(len(index)):
+            row[index[i][0]] = r[i]
+        result.append(row)
+    
+    return result
+    
 
 class Mysql:
     
@@ -16,85 +20,87 @@ class Mysql:
         self.conn = pymysql.connect(**MYSQL_CONFIG)
         self.cur  = self.conn.cursor()
 
-    def create_database(self, database_name):
-        status = self.cur.execute("show database like '%s'"%database_name)
-        if status == True:
-            pass
-        else:
-            self.cur.execute("create database %s"%database_name)
+    def query(self, sql, cond=()):
 
-    def use_database(self, database_name):
-        self.cur.execute("use %s"%databases_name)
-
-    def create_table(self, table_name):
-        status = self.cur.execute("show table like '%s'"%table_name)
-        if status == True:
-            pass
-        else:
-            self.cur.execute("create table %s"%table_name)
-
-    def query(sql, cond=()):
         if cond == ():
             self.cur.execute(sql)
+            index = self.cur.description
             res = self.cur.fetchone()
         else:
-            self.cur.execute(sql % condition)
+            self.cur.execute(sql % cond)
+            index = self.cur.description
             res = self.cur.fetchone()
 
-        result = []
-        for r in res:
-            row = {}
-            for i in range(len(index)):
-                row[index[i][0]] = r[i]
-            result.append(row)
+        return json_output(index, res)
+    
+    def query_time(self, table_name, array=()):
+        
+        lens = len(array)
 
-        return result
+        join_str = ''
 
-    def query_fetchall(sql, cond=()):
+        if lens == 0:
+            cond = (table_name,)
+        elif lens == 1:
+            join_str = 'where time = %d'
+            cond = (table_name, array[0])
+        elif lens == 2:
+            join_str = 'where time between %d and %d'
+            cond  = (table_name, array[0], array[1])
+        else:
+            exit(0)
+
+        sql = 'select * from %s ' + join_str
+        print(sql%cond) 
+        self.cur.execute(sql % cond)
+        index = self.cur.description
+        res = self.cur.fetchall()
+        
+        return json_output(index, res)
+
+    def query_fetchall(self, sql, cond=()):
+
         if cond == ():
             self.cur.execute(sql)
+            index = self.cur.description
             res = self.cur.fetchall()
         else:
-            self.cur.execute(sql % condition)
+            self.cur.execute(sql % cond)
+            index = self.cur.description
             res = self.cur.fetchall()
         
-        result = []
-        for r in res:
-            row = {}
-            for i in range(len(index)):
-                row[index[i][0]] = r[i]
-            result.append(row)
-
-        return result
+        return json_output(index, res)
         
-    def insert(sql, cond=()):
+    def insert(self, sql, cond=()):
+
         try:
             if cond == ():
                 res = self.cur.execute(sql)
             else:
-                res = self.cur.execute(sql % condition)
+                res = self.cur.execute(sql % cond)
+
             self.commit()
+            print("insert sucessful")
         except:
             self.rollback()
+            print("insert fail")
 
-    def close():
+    def close(self):
         self.conn.close()
 
-    def commit():
+    def commit(self):
         self.conn.commit()
 
-    def rollback():
+    def rollback(self):
         self.conn.rollback()
-
-def trigger_init(ip):
-    mysql = Mysql()
-    name = ip + '_monitor'
-    mysql.create_database(name)
-    mysql.use_database(name)
-    mysql.create_table(cpu_sql)
-    mysql.close()
-    mysql.close()
 
 
 if __name__ == '__main__':
-    print("sql") 
+    mysql = Mysql()
+    '''
+    sql = "insert into process values(%s, %s, %s, %s, %s, %s)"
+    array = (1,1302, "abc",0.0, 123,123123123)
+    mysql.insert(sql,array)
+    '''
+    res = mysql.query_time('sysinfo', 1547547622)
+    print(res)
