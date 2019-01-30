@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/open-iconic-bootstrap.min.css">
+</head>
+<body>
+    {% include 'head.html' %}
+    {% include 'left.html' %}
+    <div class="col-sm-9 col-md-10">
+    <div id="container" style="height:500%"></div>
+    </div>
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/Chart.min.js"></script>
+	<script type="text/javascript" src="/static/js/popper.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/echarts.common.min.js"></script>
+        <script type="text/javascript">
+
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+
+function makeGrid(top, height, opt) {
+    return echarts.util.merge({
+        left: 90,
+        right: 90,
+        top: top,
+        height: height
+    }, opt || {}, true);
+}
+
+
+
+function makeGridData(xAxisIndex, yAxisIndex, chartType, chartName, chartData, opt){
+    return echarts.util.merge({
+        type:chartType,
+        name:chartName,
+        smooth: true,
+        symbol:'none',
+        areaStyle:{
+            normal:{}
+        },
+        xAxisIndex: xAxisIndex,
+        yAxisIndex: yAxisIndex,
+        data: chartData,
+    },opt || {}, true);
+}
+
+function makeXAxis(gridIndex, opt){
+    return echarts.util.merge({
+        type: 'category',
+        gridIndex: gridIndex,
+        boundaryGap: false,
+        data: viewDate
+    },opt || {}, true);
+}
+
+function makeYAxis(gridIndex, opt){
+    return echarts.util.merge({
+        type:'value',
+        gridIndex: gridIndex,
+        boundaryGap: [0, '50%'],
+    },opt || {}, true);
+
+}
+
+
+var viewDate = ["00:00", "00:01", "00:02", "00:03", "00:04","00:05","00:06", "00:07"]; 
+
+var net_io = [59.55, 60.43, 56.93, 40.51, 50.08, 70.01, 70.01, 70.01];
+
+myChart.setOption({
+    animation: false,
+    toolbox:{
+        feature:{
+            saveAsImage:{}
+        }
+    },
+    grid:[
+        makeGrid(100,100)
+    ],
+    xAxis:[
+        makeXAxis()
+    ],
+    yAxis:[
+        makeYAxis()
+    ],
+    series:[
+        makeGridData(0,0,'line', 'net_io', net_io)
+    ]
+})
+
+myChart.hideLoading();
+url = '/net_io';
+
+setInterval(function(){
+    $.post(url, {}, function(ret){
+        var ret = JSON.parse(ret);
+
+        net_io.push(parseInt(ret.num));
+        viewDate.push(ret.times);
+
+        viewDate.shift();
+        net_io.shift();
+        
+        myChart.hideLoading();
+        myChart.setOption({
+            xAxis:[
+                makeXAxis()
+            ],
+
+            series:[
+                makeGridData(0,0,'line', 'net_io', net_io)
+            ]
+        });
+    })
+},1000);
+
+
+</script>
+</body>
+</html>

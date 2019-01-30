@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/open-iconic-bootstrap.min.css">
+</head>
+<body>
+    {% include 'head.html' %}
+    {% include 'left.html' %}
+    <div class="col-sm-9 col-md-10">
+    <div id="container" style="height:500%"></div>
+    </div>
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/Chart.min.js"></script>
+	<script type="text/javascript" src="/static/js/popper.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/echarts.common.min.js"></script>
+        <script type="text/javascript">
+
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+
+            var dataStyle = {
+                normal: {
+                    label: {
+                        show : false
+                    },
+                    
+                    shadowBlur: 30,
+                    shadowColor: 'rgba(40,40,40,0.5)',
+
+                }
+            };
+
+            var placeHolderStyle = {
+                normal: {
+                    color: 'rgba(44,59,70,1)',
+                    label: {
+                        show: false
+                    },
+                },
+
+                emphasis:{
+                    color: 'rgba(44,59,70,1)'
+                }
+            
+            };
+
+            myChart.setOption({
+                title: {
+                    text: '',
+                    x: 'center',
+                    y: 'center',
+                    textStyle: {
+                        fontWeight: 'normal',
+                        color: "#0bb6f0",
+                        fontSize: 80
+                    }
+                },
+
+                backgroundColor: '#011128',
+                color: ['#eb644b', '#313443', '#fff'],
+
+                tooltip: {
+                    show: false,
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+
+                toolbox: {
+                    show: false,
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        dataView: {
+                            show: true,
+                            readOnly: false
+                        },
+                        restore: {
+                            show: true
+                        },
+                        savaAsImage: {
+                            show: true    
+                        }
+                    }
+                },
+
+                series: [{
+                        name: 'Line 1',
+                        type: 'pie',
+                        clockWise: false,
+                        radius: [195, 200],
+                        itemStyle: dataStyle,
+                        hoverAnimation: false,
+
+                        data: [{
+                                value: 0,
+                                name: '01'
+                        }, {
+                                value: 0,
+                                name: 'invisible',
+                                itemStyle: placeHolderStyle
+                        }]
+                }]
+
+            })
+            
+            myChart.showLoading();
+
+            value1 = 0;
+            value2 = 0;
+            str1 = '';
+            url = '/mem';
+
+            setInterval(function(){
+                $.post(url,{},function(ret){
+                    if(ret){
+                        str1 = ret + '%';
+                        console.log(str1);
+                        value1 = parseInt(ret);
+                        console.log(value1);
+                        value2 = 100 - value1;
+                        console.log(value2);
+                        myChart.hideLoading();
+                        myChart.setOption({
+
+                        title: {
+                            text: str1,
+                        },
+
+                        series: [{
+                            data: [{
+                                value: value1,
+                                name: '01'
+                                }, {
+
+                                value: value2,
+                                name: 'invisible',
+                                itemStyle: placeHolderStyle
+                                }]
+                            }]
+                        })
+                    }
+                
+                })
+            },1000);
+
+
+
+
+
+
+            
+            
+</script>
+</body>
+</html>

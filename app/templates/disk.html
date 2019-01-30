@@ -22,7 +22,7 @@ var dom = document.getElementById("container");
 var myChart = echarts.init(dom);
 
 //图表基本信息定义
-var viewTitle = 'CPU percent';
+var viewTitle = 'disk percent';
 var viewSubTitle = echarts.format.formatTime('yyyy年MM月dd', new Date());
 
 //图表定位
@@ -35,7 +35,7 @@ var viewDate = ["00:00", "00:05", "00:10", "00:15", "00:20", "00:25", "01:00", "
 
 //表格数据
 //SELECT WMSYS.WM_CONCAT(TRUNC(DBMS_RANDOM.VALUE(5, 60), 2)) DBTIME FROM DUAL CONNECT BY ROWNUM <= 30;
-var cpu = [59.55, 60.43, 57.46, 48.87, 66.33, 57.38, 42.1, 59.17, 42.36, 59.65];
+var disk = [59.55, 60.43, 57.46, 48.87, 66.33, 57.38, 42.1, 59.17, 42.36, 59.65];
 
 //直角坐标系内绘图网格
 function makeGrid(top, height, opt) {
@@ -132,7 +132,7 @@ myChart.setOption({
 
     yAxis:[
         makeYAxis(0,{
-            name: '主机CPU',
+            name: '主机DISK',
             min: 0,
             max: 100
         }),
@@ -140,13 +140,13 @@ myChart.setOption({
 
     //每个系列通过type决定自己的图表
     series:[
-        makeGridData(0,0,'line','CPU percent', cpu),
+        makeGridData(0,0,'line','DISK percent', disk),
     ]
 });
 
     myChart.showLoading();
 
-    var url = '/cpu';
+    var url = '/disk';
 
     setInterval(function(){
         $.post(url,{},function(ret){
@@ -154,8 +154,8 @@ myChart.setOption({
 
             viewDate.shift();
             viewDate.push(ret.times);
-            cpu.shift();
-            cpu.push(ret.num);
+            disk.shift();
+            disk.push(ret.num);
 
             myChart.hideLoading();
 
@@ -164,7 +164,7 @@ myChart.setOption({
                     makeXAxis(0),
                 ],
                 series:[ 
-                    makeGridData(0,0,'line', 'CPU percent', cpu),
+                    makeGridData(0,0,'line', 'DISK percent', disk),
                 ]
             });
         }
