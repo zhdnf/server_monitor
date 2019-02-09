@@ -9,6 +9,12 @@ import random
 import json
 import time
 
+# 延迟时间，秒为单位
+delay = 30
+
+# 查询间隔
+interval = 60
+
 class Application(tornado.web.Application):
     def __init__(self):
         self.handlers = [
@@ -26,6 +32,7 @@ class Application(tornado.web.Application):
 
         super(Application,self).__init__(self.handlers, **self.settings)
 
+
 class BaseHandler(tornado.web.RequestHandler):
     def render(self, template_name, **kwargs):
         template_dirs = []
@@ -42,23 +49,21 @@ class BaseHandler(tornado.web.RequestHandler):
         
         return content
 
+
 class MainHandler(BaseHandler):
 
     def get(self):
         self.write(self.render("index.html"))
         # static_path=self.settings['static_path']))
 
+
 class CpuPercentHandler(BaseHandler):
     def get(self):
         self.write(self.render("cpu.html"))
     
     def post(self):
-
-        # 延迟时间，秒为单位
-        delay = 30
-
-        # 查询间隔
-        interval = 60
+        global delay
+        global local_time
 
         local_time = time.time() 
         query_time = local_time - delay
@@ -74,6 +79,7 @@ class CpuPercentHandler(BaseHandler):
         ret = {'times' : time_str, 'num': str(cpu)}  
         self.write(json.dumps(ret))
 
+
 class SwapHandler(BaseHandler):
     def get(self):
         self.write(self.render("swap.html"))
@@ -82,6 +88,7 @@ class SwapHandler(BaseHandler):
         num = random.randint(1,100)
         
         self.write(str(num))
+
 
 class MemHandler(BaseHandler):
     def get(self):
@@ -92,6 +99,7 @@ class MemHandler(BaseHandler):
         
         self.write(str(num))
 
+
 class DiskHandler(BaseHandler):
     def get(self):
         self.write(self.render("disk.html"))
@@ -99,6 +107,7 @@ class DiskHandler(BaseHandler):
     def post(self):
         ret = {'times' : "20:02", 'num': str(random.randint(0,100))}  
         self.write(json.dumps(ret))
+
 
 class Disk_ioHandler(BaseHandler):
     def get(self):
@@ -119,15 +128,33 @@ class Net_ioHandler(BaseHandler):
 
         self.write(json.dumps(ret))
 
+
 class ProcessHandler(BaseHandler):
     def get(self):
         self.write(self.render("process.html"))
 
     def post(self):
+        global delay
+        global local_time
+
+        local_time = time.time() 
+        query_time = local_time - delay
+
+        datas = requests.get('http://192.168.203.155:8888/process?time1=%d&time2=%d'%(query_time - interval, query_time))
+        datas = json.loads(datas.text)
+            
+        datas = datas[-5:]
+
         res = []
         for i in range(0,5):
+            pid = datas[i]['pid']
+            name = datas[i]['pname']
+            cpu = datas[i]['pcpu']
+            mem = datas[i]['pmem']
+            times = datas[i]['time']
+           
             dit={}
-            dit = {'names':'pid\n\nname', 'cpu':random.randint(1,10),'mem':random.randint(1,10)}
+            dit = {'names':'%d\n\n%s'%(pid, name), 'cpu': cpu, 'mem':mem}
             res.append(dit)
 
         self.write(json.dumps(res))
@@ -138,13 +165,31 @@ class ProcHandler(BaseHandler):
         self.write(self.render("proc.html"))
 
     def post(self):
+        global delay
+        global local_time
+
+        local_time = time.time() 
+        query_time = local_time - delay
+
+        datas = requests.get('http://192.168.203.155:8888/process?time1=%d&time2=%d'%(query_time - interval, query_time))
+        datas = json.loads(res.text)
+            
+        datas = datas[-5:]
+
         res = []
         for i in range(0,5):
+            pid = datas[i]['pid']
+            name = datas[i]['pname']
+            cpu = datas[i]['pcpu']
+            mem = datas[i]['pmem']
+            times = datas[i]['time']
+           
             dit={}
-            dit = {'names':'pid\n\nname', 'cpu':random.randint(1,10),'mem':random.randint(1,10)}
+            dit = {'names':'%d\n\n%s'%(pid, name), 'cpu': cpu, 'mem':mem}
             res.append(dit)
 
         self.write(json.dumps(res))
+
 
 if __name__ == "__main__":
     application = Application()
