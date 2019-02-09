@@ -14,7 +14,7 @@ def json_output(index, res):
     return result
     
 
-class Mysql:
+class Mysql(object):
     
     def __init__(self):
         self.conn = pymysql.connect(**MYSQL_CONFIG)
