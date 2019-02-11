@@ -3,6 +3,10 @@ sys.path.append('/root/server_monitor/')
 from config import MYSQL_CONFIG
 import pymysql
 
+
+
+import random
+
 def json_output(index, res):
     result = []
     for r in res:
@@ -73,17 +77,17 @@ class Mysql:
         
     def insert(self, sql, cond=()):
 
-        try:
-            if cond == ():
-                res = self.cur.execute(sql)
-            else:
-                res = self.cur.execute(sql % cond)
+    #try:
+        if cond == ():
+            res = self.cur.execute(sql)
+        else:
+            res = self.cur.execute(sql % cond)
 
-            self.commit()
-            print("insert sucessful")
-        except:
-            self.rollback()
-            print("insert fail")
+        self.commit()
+        print("insert sucessful")
+    #except:
+        #self.rollback()
+        #print("insert fail")
 
     def close(self):
         self.conn.close()
@@ -93,14 +97,3 @@ class Mysql:
 
     def rollback(self):
         self.conn.rollback()
-
-
-if __name__ == '__main__':
-    mysql = Mysql()
-    '''
-    sql = "insert into process values(%s, %s, %s, %s, %s, %s)"
-    array = (1,1302, "abc",0.0, 123,123123123)
-    mysql.insert(sql,array)
-    '''
-    res = mysql.query_time('sysinfo', 1547547622)
-    print(res)
