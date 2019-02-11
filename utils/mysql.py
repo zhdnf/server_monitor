@@ -3,10 +3,6 @@ sys.path.append('/root/server_monitor/')
 from config import MYSQL_CONFIG
 import pymysql
 
-
-
-import random
-
 def json_output(index, res):
     result = []
     for r in res:
