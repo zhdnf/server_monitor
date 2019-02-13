@@ -1,18 +1,22 @@
-<!DOCTYPE>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>[title]</title>
-	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/css/open-iconic-bootstrap.min.css">
-</head>
-<body>
-    {% include 'head.html' %}
-    {% include 'left.html' %}
-    <div class="col-sm-9 col-md-10">
-    </div>
-	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/static/js/popper.min.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-</body>	
-</html>
+        {% include 'header.html' %}
+        {% include 'left.html' %}
+
+		
+		<!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 部件首页 <small>Amaze UI</small></div>
+                        <p class="page-header-description">Amaze UI 含近 20 个 CSS 组件、20 余 JS 组件，更有多个包含不同主题的 Web 组件。</p>
+                    </div>
+                    <div class="am-u-lg-3 tpl-index-settings-button">
+                        <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+		
+        {% include 'bottom.html' %}
