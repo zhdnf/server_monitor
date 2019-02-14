@@ -1,176 +1,163 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/css/open-iconic-bootstrap.min.css">
-</head>
-<body>
-    {% include 'head.html' %}
+﻿    {% include 'header.html' %}
     {% include 'left.html' %}
-    <div class="col-sm-9 col-md-10">
+	
+    <div class="am-u-sm-12 col-u-md-12 am-u-lg-9">
     <div id="container" style="height:500%"></div>
     </div>
-	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/static/js/Chart.min.js"></script>
-	<script type="text/javascript" src="/static/js/popper.min.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/static/js/echarts.common.min.js"></script>
-        <script type="text/javascript">
 
-var dom = document.getElementById("container");
-var myChart = echarts.init(dom);
+    <script type="text/javascript">
 
-//图表基本信息定义
-var viewTitle = 'CPU percent';
-var viewSubTitle = echarts.format.formatTime('yyyy年MM月dd', new Date());
+		var dom = document.getElementById("container");
+		var myChart = echarts.init(dom);
 
-//图表定位
-var chartGridTop = 30;
-var chartGridHeight = 150;
+		//图表基本信息定义
+		var viewTitle = 'CPU percent';
+		var viewSubTitle = echarts.format.formatTime('yyyy年MM月dd', new Date());
 
-//时间轴
-//SELECT WMSYS.WM_CONCAT('"'||TO_CHAR(TRUNC(SYSDATE, 'MM') + ROWNUM - 1, 'YYYY-MM-DD')||'"') DBTIME FROM DUAL CONNECT BY ROWNUM <= 30;
-var viewDate = ["19-00-00", "00:05", "00:10", "00:15", "00:20", "00:25", "01:00", "01:05", "23:50", "23:55"];
+		//图表定位
+		var chartGridTop = 30;
+		var chartGridHeight = 150;
 
-//表格数据
-//SELECT WMSYS.WM_CONCAT(TRUNC(DBMS_RANDOM.VALUE(5, 60), 2)) DBTIME FROM DUAL CONNECT BY ROWNUM <= 30;
-var cpu = [59.55, 60.43, 57.46, 48.87, 66.33, 57.38, 42.1, 59.17, 42.36, 59.65];
+		//时间轴
+		//SELECT WMSYS.WM_CONCAT('"'||TO_CHAR(TRUNC(SYSDATE, 'MM') + ROWNUM - 1, 'YYYY-MM-DD')||'"') DBTIME FROM DUAL CONNECT BY ROWNUM <= 30;
+		var viewDate = ["19-00-00", "00:05", "00:10", "00:15", "00:20", "00:25", "01:00", "01:05", "23:50", "23:55"];
 
-//直角坐标系内绘图网格
-function makeGrid(top, height, opt) {
-    return echarts.util.merge({
-        left: 90,
-        right: 90,
-        top: top,
-        height: height
-    }, opt || {}, true);
-}
+		//表格数据
+		//SELECT WMSYS.WM_CONCAT(TRUNC(DBMS_RANDOM.VALUE(5, 60), 2)) DBTIME FROM DUAL CONNECT BY ROWNUM <= 30;
+		var cpu = [59.55, 60.43, 57.46, 48.87, 66.33, 57.38, 42.1, 59.17, 42.36, 59.65];
 
-//X轴生成器
-function makeXAxis(gridIndex, opt) {
-//避免X轴数据显示过于频繁
-    axisLabelFlag = false;
-    return echarts.util.merge({
-        type: 'category',
-        gridIndex: gridIndex,
-        //统一时间轴数据
-        data: viewDate,
-    },opt || {},true);
-}
+		//直角坐标系内绘图网格
+		function makeGrid(top, height, opt) {
+			return echarts.util.merge({
+				left: 90,
+				right: 90,
+				top: top,
+				height: height
+			}, opt || {}, true);
+		}
 
-//Y轴生成器
-function makeYAxis(gridIndex, opt)
-{
-    return echarts.util.merge({
-        type: 'value',
-        nameLocation: 'middle',
-        nameGap: '50',
-        gridIndex: gridIndex,
-        nameTextStyle:{
-            color: '#333'
-        },
-        axisLabel:{
-            show: true
-        },
-    }, opt || {}, true);
-}
+		//X轴生成器
+		function makeXAxis(gridIndex, opt) {
+		//避免X轴数据显示过于频繁
+			axisLabelFlag = false;
+			return echarts.util.merge({
+				type: 'category',
+				gridIndex: gridIndex,
+				//统一时间轴数据
+				data: viewDate,
+			},opt || {},true);
+		}
 
-//数据生成器
-function makeGridData(xAxisIndex, yAxisIndex, chartType, chartName, chartData,opt)
-{
-    return echarts.util.merge({
-        type: chartType,
-        name: chartName,
-        xAxisIndex: xAxisIndex,
-        yAxisIndex: yAxisIndex,
-        data: chartData,
-    }, opt || {}, true);
-}
+		//Y轴生成器
+		function makeYAxis(gridIndex, opt)
+		{
+			return echarts.util.merge({
+				type: 'value',
+				nameLocation: 'middle',
+				nameGap: '50',
+				gridIndex: gridIndex,
+				nameTextStyle:{
+					color: '#333'
+				},
+				axisLabel:{
+					show: true
+				},
+			}, opt || {}, true);
+		}
 
-myChart.setOption({
-    animation: false,
-//标题组件，包含主标题和副标题
-    title:{
-        x: 'center',
-        text: viewTitle,
-        subtext: viewSubTitle,
-        padding: 0,
-    },
+		//数据生成器
+		function makeGridData(xAxisIndex, yAxisIndex, chartType, chartName, chartData,opt)
+		{
+			return echarts.util.merge({
+				type: chartType,
+				name: chartName,
+				xAxisIndex: xAxisIndex,
+				yAxisIndex: yAxisIndex,
+				data: chartData,
+			}, opt || {}, true);
+		}
 
-    tooltip:{
-        //移动端展示方式
-        trigger: 'axis',
-        transitionDuration: 0,
-        confine: true,
-        bordeRadius: 4,
-        borderWidth: 1,
-        borderColor: '#333',
-        backgroundColor: 'rgba(255,255,255,0.9)',
-        textStyle:{
-            fontSize: 12,
-            color: '#333'
-        }
-    },
+		myChart.setOption({
+			animation: false,
+		//标题组件，包含主标题和副标题
+			title:{
+				x: 'center',
+				text: viewTitle,
+				subtext: viewSubTitle,
+				padding: 0,
+			},
 
-    //坐标轴指示器（axisPointer）的全局公用设置
-    axisPointer:{
-        type: 'shadow',
-        link:{
-            xAxisIndex: 'all'
-        }
-    },
+			tooltip:{
+				//移动端展示方式
+				trigger: 'axis',
+				transitionDuration: 0,
+				confine: true,
+				bordeRadius: 4,
+				borderWidth: 1,
+				borderColor: '#333',
+				backgroundColor: 'rgba(255,255,255,0.9)',
+				textStyle:{
+					fontSize: 12,
+					color: '#333'
+				}
+			},
 
-    //直角坐标系内绘图网格
-    grid:[
-        makeGrid(chartGridTop, chartGridHeight),
-    ],
+			//坐标轴指示器（axisPointer）的全局公用设置
+			axisPointer:{
+				type: 'shadow',
+				link:{
+					xAxisIndex: 'all'
+				}
+			},
 
-    xAxis:[
-        makeXAxis(0),
-    ],
+			//直角坐标系内绘图网格
+			grid:[
+				makeGrid(chartGridTop, chartGridHeight),
+			],
 
-    yAxis:[
-        makeYAxis(0,{
-            name: '主机CPU',
-            min: 0,
-            max: 100
-        }),
-    ],
+			xAxis:[
+				makeXAxis(0),
+			],
 
-    //每个系列通过type决定自己的图表
-    series:[
-        makeGridData(0,0,'line','CPU percent', cpu),
-    ]
-});
+			yAxis:[
+				makeYAxis(0,{
+					name: '主机CPU',
+					min: 0,
+					max: 100
+				}),
+			],
 
-    myChart.showLoading();
+			//每个系列通过type决定自己的图表
+			series:[
+				makeGridData(0,0,'line','CPU percent', cpu),
+			]
+		});
 
-    var url = '/cpu';
+			myChart.showLoading();
 
-    setInterval(function(){
-        $.post(url,{},function(ret){
-            var ret = JSON.parse(ret);
+			var url = '/cpu';
 
-            viewDate.shift();
-            viewDate.push(ret.times);
-            cpu.shift();
-            cpu.push(ret.num);
+			setInterval(function(){
+				$.post(url,{},function(ret){
+					var ret = JSON.parse(ret);
 
-            myChart.hideLoading();
+					viewDate.shift();
+					viewDate.push(ret.times);
+					cpu.shift();
+					cpu.push(ret.num);
 
-            myChart.setOption({
-                xAxis:[ 
-                    makeXAxis(0),
-                ],
-                series:[ 
-                    makeGridData(0,0,'line', 'CPU percent', cpu),
-                ]
-            });
-        }
-    )},1000);
+					myChart.hideLoading();
 
-
-</script>
-</body>
-</html>
+					myChart.setOption({
+						xAxis:[ 
+							makeXAxis(0),
+						],
+						series:[ 
+							makeGridData(0,0,'line', 'CPU percent', cpu),
+						]
+					});
+				}
+			)},1000);
+	</script>
+	
+	{% include 'bottom.html' %}
