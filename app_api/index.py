@@ -65,7 +65,7 @@ if __name__ == "__main__":
     application = tornado.web.Application([
         (r"/", MainHandler),
         (r"/sys", SysInfoHandler),
-        (r"/process", SysInfoHandler),
+        (r"/process", ProcessHandler),
     ])
 
     application.listen(8888)
