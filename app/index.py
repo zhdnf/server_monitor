@@ -26,7 +26,8 @@ class Application(tornado.web.Application):
                             (r"/disk_io", Disk_ioHandler),
                             (r"/net_io", Net_ioHandler),
                             (r"/process", ProcessHandler),
-                            (r"/proc", ProcHandler)
+                            (r"/proc", ProcHandler),
+                            (r"/404", Page404Handler)
                         ]
         self.settings = TORNADO_CONFIG
 
@@ -77,6 +78,7 @@ class CpuPercentHandler(BaseHandler):
         time_str = '%d:%d:%d'%(time_object.tm_hour, time_object.tm_min, time_object.tm_sec)
 
         ret = {'times' : time_str, 'num': str(cpu)}  
+
         self.write(json.dumps(ret))
 
 
@@ -189,6 +191,14 @@ class ProcHandler(BaseHandler):
             res.append(dit)
 
         self.write(json.dumps(res))
+
+
+class Page404Handler(BaseHandler):
+    def get(self):
+        self.write(self.render("404.html"))
+    
+
+
 
 
 if __name__ == "__main__":
