@@ -6,7 +6,7 @@ from faker import Faker
 sql_1 = 'insert into sysinfo values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 sql_2 = "insert into process values(%s, %s, '%s', %s, %s, %s)"
 
-local_time = 1549850438
+local_time = 1550106000
 
 def cpu_insert():
     global local_time
@@ -39,5 +39,6 @@ def process_insert():
         local_time = local_time + 2
             
 if __name__ == "__main__":
-    process_insert()
+    cpu_insert()
+    # process_insert()
 
