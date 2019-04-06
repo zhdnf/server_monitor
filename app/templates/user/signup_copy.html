@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin index Examples</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="../static/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="../static/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="../static/css/amazeui.min.css" />
+    <link rel="stylesheet" href="../static/css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="../static/css/app.css">
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/vue.js"></script>
+
+</head>
+
+<body data-type="login">
+    <script src="../static/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 风格切换 -->
+        <div class="tpl-skiner">
+            <div class="tpl-skiner-toggle am-icon-cog">
+            </div>
+            <div class="tpl-skiner-content">
+                <div class="tpl-skiner-content-title">
+                    选择主题
+                </div>
+                <div class="tpl-skiner-content-bar">
+                    <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                    <span class="skiner-color skiner-black" data-color="theme-black"></span>
+                </div>
+            </div>
+        </div>
+        <div class="tpl-login">
+            <div class="tpl-login-content">
+                <div class="tpl-login-title">注册用户</div>
+                <span class="tpl-login-content-info">
+                  创建一个新的用户
+              </span>
+
+<form id="vm" class="uk-form uk-form-stacked">
+    <div class="uk-alert uk-alert-danger uk-hidden"></div>
+    a<div class="uk-form-row">
+        <label class="uk-form-label">名字:</label>
+<div class="uk-form-controls">
+<input v-model="name" type="text" maxlength="50" placeholder="名字" class="uk-width-1-1">
+</div>
+</div>
+<div class="uk-form-row">
+<label class="uk-form-label">电子邮件:</label>
+<div class="uk-form-controls">
+<input v-model="email" type="text" maxlength="50" placeholder="your-name@example.com" class="uk-width-1-1">
+</div>
+</div>
+<div class="uk-form-row">
+<label class="uk-form-label">输入口令:</label>
+<div class="uk-form-controls">
+<input v-model="password1" type="password" maxlength="50" placeholder="输入口令" class="uk-width-1-1">
+</div>
+</div>
+<div class="uk-form-row">
+<label class="uk-form-label">重复口令:</label>
+<div class="uk-form-controls">
+<input v-model="password2" type="password" maxlength="50" placeholder="重复口令" class="uk-width-1-1">
+</div>
+</div>
+<div class="uk-form-row">
+<button v-on:click="submit" type="submit" class="uk-button uk-button-primary"><i class="uk-icon-user"></i> 注册</button>
+</div>
+</form>
+
+            </div>
+        </div>
+    </div>
+    <script src="../static/js/amazeui.min.js"></script>
+    <script src="../static/js/app.js"></script>
+    <script>
+function validateEmail(email) {
+    var re = /^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$/;
+    return re.test(email.toLowerCase());
+}
+$(function () {
+    var vm = new Vue({
+    el: '#vm',
+    data: {
+        name: '',
+        email: '',
+        password1: '',
+        password2: ''
+    },
+    methods:{
+        submit: function(event){
+            event.preventDefault();
+            var $form = $('#vm');
+            if (! this.name.trim()){
+                return 0
+                /* return $form.showFormError('请输入名字'); */
+            }
+            if (! validateEmail(this.email.trim().toLowerCase())){
+                return 0
+                /* return $form.showFormError('请输入正确的Email地址');*/
+            }
+            if (this.password1.length<6)
+            {
+                return 0
+                /*return $form.showFormError('口令长度至少为6个字符');*/
+            }
+            if (this.password1 !== this.password2)
+            { 
+                return 0
+                /*return $form.showFormError('两次输入的口令不一致');*/
+            }
+            var email = this.email.trim().toLowerCase();
+            
+            $form.postJSON('/signup?c=insert',{
+                name: this.name.trim(),
+                email: email,
+                passwd: CryptoJS.SHA1(email + ':' + this.password1).toString()
+            },function(err, r){
+                if (err){
+                    return $form.showFormError(err);
+                }
+                return location.assign('/');
+            });
+        }
+    }
+});
+    $('#vm').show();
+});
+</script>
+
+
+
+</body>
+
+</html>
