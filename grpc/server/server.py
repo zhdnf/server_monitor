@@ -2,21 +2,23 @@ import sys
 sys.path.append("/root/server_monitor")
 
 import psutil
+import time
 from concurrent import futures
 import grpc 
-import time
-from config import GPRC_PORT
-from utils import mysql
+
+from conf.config import GRPC_PORT
+from db import mysql
 
 import systeminfo_pb2, systeminfo_pb2_grpc
 
+
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
+
 
 class Probe(systeminfo_pb2_grpc.SysinfoServicer):
     def GetSysInfo(self, request, context):
 
-        print(request.cpu, request.vmem,request.smem, request.disk,
-        request.disk_i, request.disk_o,request.net_i, request.net_o)
+        # print(request.cpu, request.vmem,request.smem, request.disk, request.disk_i, request.disk_o,request.net_i, request.net_o)
 
         time_l = time.time()
 
