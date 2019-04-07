@@ -1,4 +1,7 @@
 import random
+import time
+
+import requests
 
 from app.handlers.common import BaseHandler
 
@@ -10,7 +13,7 @@ interval = 60
 
 class CpuPercentHandler(BaseHandler):
     def get(self):
-        self.write(self.render("cpu.html"))
+        self.write(self.render("sysinfo/cpu.html"))
     
     def post(self):
         global delay
@@ -34,7 +37,7 @@ class CpuPercentHandler(BaseHandler):
 
 class SwapHandler(BaseHandler):
     def get(self):
-        self.write(self.render("swap.html"))
+        self.write(self.render("sysinfo/swap.html"))
 
     def post(self):
         num = random.randint(1,100)
@@ -44,7 +47,7 @@ class SwapHandler(BaseHandler):
 
 class MemHandler(BaseHandler):
     def get(self):
-        self.write(self.render("mem.html"))
+        self.write(self.render("sysinfo/mem.html"))
 
     def post(self):
         num = random.randint(1,100)
@@ -53,7 +56,7 @@ class MemHandler(BaseHandler):
 
 class DiskHandler(BaseHandler):
     def get(self):
-        self.write(self.render("disk.html"))
+        self.write(self.render("sysinfo/disk.html"))
 
     def post(self):
         ret = {'times' : "20:02", 'num': str(random.randint(0,100))}
@@ -62,7 +65,7 @@ class DiskHandler(BaseHandler):
 
 class DiskIOHandler(BaseHandler):
     def get(self):
-        self.write(self.render("disk_io.html"))
+        self.write(self.render("sysinfo/disk_io.html"))
 
     def post(self):
         ret = {'times' : "01:00", 'num':
@@ -73,7 +76,7 @@ class DiskIOHandler(BaseHandler):
 
 class NetIOHandler(BaseHandler):
     def get(self):
-        self.write(self.render("net_io.html"))
+        self.write(self.render("sysinfo/net_io.html"))
 
     def post(self):
         ret = {'times' : "01:02", 'num':
@@ -84,7 +87,7 @@ class NetIOHandler(BaseHandler):
 
 class ProcessHandler(BaseHandler):
     def get(self):
-        self.write(self.render("process.html"))
+        self.write(self.render("sysinfo/process.html"))
  
     def post(self):
         global delay
@@ -115,7 +118,7 @@ class ProcessHandler(BaseHandler):
 
 class ProcHandler(BaseHandler):
     def get(self):
-        self.write(self.render("proc.html"))
+        self.write(self.render("sysinfo/proc.html"))
 
     def post(self):
         global delay

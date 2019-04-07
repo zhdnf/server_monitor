@@ -14,6 +14,6 @@ class MainHandler(BaseHandler):
 
 class Page404Handler(BaseHandler):
     def get(self):
-        self.write(self.render("404.html"))
+        self.write(self.render("web/404.html"))
 
 
