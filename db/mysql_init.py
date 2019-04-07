@@ -1,12 +1,7 @@
 import pymysql
 
-MYSQL_CONFIG = {
-    'host' : '127.0.0.1',
-    'port' : 3306,
-    'user' : 'root',
-    'passwd' : '123',
-    'charset' : 'utf8mb4',
-}
+from conf.config import MYSQL_CONFIG
+
 
 conn = pymysql.connect(**MYSQL_CONFIG)
 cur  = conn.cursor()
@@ -17,6 +12,7 @@ user_sql= " create table user( \
             name varchar(32) not null, \
             email varchar(32) not null, \
             passwd char(32) not null, \
+            last_login datetime not null, \
             PRIMARY KEY( id )) "
 
 # cpu table
@@ -40,6 +36,12 @@ process_sql = " create table process( \
                 pcpu int not null, \
                 pmem int not null, \
                 time int not null )"
+
+# notification table
+notification_sql = " create tables notify( \
+                     id int not null, \ 
+                     message text not null, \
+                     date datatime not null,)"
 
 cur.execute('drop database if exists server_monitor')
 cur.execute('create database server_monitor')

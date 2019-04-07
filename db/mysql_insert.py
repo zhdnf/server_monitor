@@ -39,6 +39,7 @@ def process_insert():
 
         local_time = local_time + 2
 
+
 def user_insert():
     array = ('zhang','123@qq.com','abc')
     mysql.Mysql().insert(sql_3, array)
@@ -46,9 +47,8 @@ def user_insert():
     mysql.Mysql().insert(sql_3, array)
     array = ('wang','223@qq.com','abc')
     mysql.Mysql().insert(sql_3, array)
-
-
             
+
 if __name__ == "__main__":
     # cpu_insert()
     # process_insert()
