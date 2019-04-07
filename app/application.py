@@ -8,7 +8,7 @@ class App(Application):
         self.handlers = [
                             (r"/", web.MainHandler),
                             (r"/login", user.LoginHandler),
-                            (r"/sign_up", user.RegisterHandler),
+                            (r"/register", user.RegisterHandler),
                             (r"/logout", user.LogoutHandler),
                             (r"/cpu", sysinfo.CpuPercentHandler),
                             (r"/swap", sysinfo.SwapHandler),
