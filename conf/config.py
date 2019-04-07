@@ -1,6 +1,6 @@
 import os
 
-BASE_DIR = os.getcwd()
+BASE_DIR = os.path.dirname(os.getcwd())
 
 # mysql config
 MYSQL_CONFIG = {
@@ -14,11 +14,21 @@ MYSQL_CONFIG = {
 
 # tornado config
 TORNADO_CONFIG = {
-    "static_path"  :  os.path.join(BASE_DIR, "/app/static"),
+    # 一般设置
+    "debug" : True,
+    "autoreload" : True,
+    
+    # 模板设置
     "template_path":  os.path.join(BASE_DIR, "app/templates"),
-    "cookie_secret":  "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
+
+    # 静态文件设置
+    "static_path"  :  os.path.join(BASE_DIR, "app/static"),
+
+    # 认证安全
+    # "cookie_secret":  "1q2w3e4r",
+    "login_url" : "/login",
     # "xsrf_cookies" : True,
-    "login_url" : "/login"
+    # "xsrf_cookies_version" : None,
 }
 
 # gprc_server
