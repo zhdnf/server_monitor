@@ -2,6 +2,11 @@ import random
 
 from app.handlers.common import BaseHandler
 
+# 延迟时间，秒为单位
+delay = 30
+
+# 查询间隔
+interval = 60
 
 class CpuPercentHandler(BaseHandler):
     def get(self):

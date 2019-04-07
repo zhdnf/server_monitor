@@ -6,12 +6,6 @@ from tornado import httpserver
 
 from application import App
 
-# 延迟时间，秒为单位
-delay = 30
-
-# 查询间隔
-interval = 60
-
 
 if __name__ == "__main__":
 
