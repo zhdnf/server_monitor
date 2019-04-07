@@ -1,7 +1,12 @@
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 
 from tornado.web import RequestHandler
+# from pycket.session import SessionMixin
 
+
+# class BaseHandler(RequestHandler, SessionMixin):
+    # def get_current_user(self):
+        # return self.session.get('user.info', None)
 
 class BaseHandler(RequestHandler):
 
@@ -12,7 +17,7 @@ class BaseHandler(RequestHandler):
     def _get_argument(self, name, source, strip=True):
         args = self._get_arguments(name, source, strip=strip)
         if not args:
-            return ()
+            return None
         return args[-1]
 
     def render(self, template_name, **kwargs):
@@ -29,9 +34,4 @@ class BaseHandler(RequestHandler):
         content = template.render(kwargs)
         
         return content
-
-    def get_current_user(self):
-        
-        return self.get_secure_cookie("username")
-
 

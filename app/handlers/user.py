@@ -1,87 +1,52 @@
-import re
+from app.handlers.common import BaseHandler
+from utils.account import authenticate
 
-from app.handlers import BaseHandler
+class RegisterHandler(BaseHandler):
+    def get(self, *args, **kwargs):
+        print("register")
+        self.render('signup.html')
 
+    def post(self, *args, **kwargs):
+        print("register post")
+        
+        username = self.get_argument('username')
+        email = self.get_argument('email')
+        password1 = self.get_argument('password1')
+        password2 = self.get_argument('password2')
+
+        if username and password1 and (password1 == password2):
+            pass
+        else:
+            self.write({'msg': 'register fail'})
 
 
 class LoginHandler(BaseHandler):
-    def post(self):
-        username = self.get_argument("username")
-        password = self.get_argument("password")
-        if username == "user" and password=="123":
-            self.set_secure_cookie("username", username)
-            self.redirect("/")
+    def get(self,*args,**kwargs):
+        if self.current_user: #若用户已登录
+            self.redirect('/') #那么直接跳转到主页
         else:
-            self.write(self.render("login.html"))
+            nextname = self.get_argument('next') #将原来的路由赋值给nextname
+            self.render('login.html', nextname= nextname )#否则去登录界面
 
-    def get(self):
-        if self.get_current_user():
-            self.redirect("/")
+    def post(self,*args,**kwargs):
+        username = self.get_argument('username')
+        password = self.get_argument('password')
+
+        passed = authenticate(username,password)
+
+        if passed: 
+            self.session.set('user_info',username) #将前面设置的cookie设置为username，保存用户登录信息
+            next_url = self.get_argument('next') # 获取之前页面的路由
+
+            if next_url:
+                self.redirect(next_url) #跳转主页路由
+            else:
+                self.redirect('/')
         else:
-            self.write(self.render("login.html"))
-
-
-class SignUpHandler(BaseHandler):
-    _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
-    _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
-
-    def post(self):
-        # 判断post请求数据
-        name = self.get_argument('username')
-        email = self.get_argument('email')
-        passwd = self.get_argument('password')
-
-        print("name:",name)
-        print("email",email)
-        print("passwd",passwd)
-        
-        '''
-        # c = self.get_argument('c')
-
-        if name is ():
-            name = 0
-        if email is () or not _RE_EMAIL.match(email):
-            email = 0
-        if passwd is () or not _RE_SHA1.match(passwd):
-            passwd = 1
-
-        # 查询users是否存在
-        res_user = requests.get('http://192.168.203.155:8888/user?email=%s'%email)
-        is_user = json.loads(res_user.text)
-        
-        # user的下个id
-        res_id = requests.get('http://192.168.203.155:8888/user')
-        uid_num = json.loads(res_id.text)
-        
-        if datas == []:
-            raise NameError('register:failed', 'email', 'Email is already in use.')
-        
-        uid = uid_num[0]['max(id)']
-        sha1_passwd = '%s:%s' % (uid, passwd)
-        
-        insert_url = 'http://192.168.203.155:8888/user?c=insert&uid=%d&name=%s&email=%s&passwd=%s'%(uid, name, email, sha1_passwd)
-        '''    
-        if name == "user" and passwd == "123":
-            print(123)
-            # make session cookie:
-            self.set_secure_cookie("username", name)
-            self.redirect("/")
-            
-        self.redirect("/")
-        
-        # r.set_cookie(COOKIE_NAME, user2cookie(user, 86400), max_age=86400, httponly=True)
-        # user.passwd = '******'
-        # r.content_type = 'application/json' 
-        # r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
-        # self.write(r)
-
-    def get(self):
-        self.write(self.render("signup.html"))
-
+            self.write({'msg':'login fail'}) #不通过，有问题
 
 class LogoutHandler(BaseHandler):
-    def get(self):
-        if self.get_argument("logout") == ():
-            self.clear_cookie("username")
-            self.redirect("/login")
- 
+    def get(self, *args, **kwargs): 
+        #self.session.set('user_info','') #将用户的cookie清除
+        self.session.delete('user_info')
+        self.redirect('/login')

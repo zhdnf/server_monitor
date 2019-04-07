@@ -1,6 +1,6 @@
 import random
 
-from app.handlers import BaseHandler
+from app.handlers.common import BaseHandler
 
 
 class CpuPercentHandler(BaseHandler):
@@ -46,10 +46,94 @@ class MemHandler(BaseHandler):
         
         self.write(str(num))
 
-
 class DiskHandler(BaseHandler):
     def get(self):
         self.write(self.render("disk.html"))
 
     def post(self):
-        pass
+        ret = {'times' : "20:02", 'num': str(random.randint(0,100))}
+        self.write(json.dumps(ret))
+
+
+class DiskIOHandler(BaseHandler):
+    def get(self):
+        self.write(self.render("disk_io.html"))
+
+    def post(self):
+        ret = {'times' : "01:00", 'num':
+        str(random.randint(0,100))}
+
+        self.write(json.dumps(ret))
+
+
+class NetIOHandler(BaseHandler):
+    def get(self):
+        self.write(self.render("net_io.html"))
+
+    def post(self):
+        ret = {'times' : "01:02", 'num':
+        str(random.randint(0,100))}
+
+        self.write(json.dumps(ret))
+
+
+class ProcessHandler(BaseHandler):
+    def get(self):
+        self.write(self.render("process.html"))
+ 
+    def post(self):
+        global delay
+        global local_time
+ 
+        local_time = time.time()
+        query_time = local_time - delay
+ 
+        datas = requests.get('http://192.168.203.155:8888/process?time1=%d&time2=%d'%(query_time
+- interval, query_time))
+        datas = json.loads(datas.text)
+ 
+        datas = datas[-5:]
+ 
+        res = []
+        for i in range(0,5):
+            pid = datas[i]['pid']
+            name = datas[i]['pname']
+            cpu = datas[i]['pcpu']
+            mem = datas[i]['pmem']
+            times = datas[i]['time']
+ 
+            dit={}
+            dit = {'names':'%d\n\n%s'%(pid, name), 'cpu': cpu, 'mem':mem}
+            res.append(dit)
+ 
+        self.write(json.dumps(res))
+
+class ProcHandler(BaseHandler):
+    def get(self):
+        self.write(self.render("proc.html"))
+
+    def post(self):
+        global delay
+        global local_time
+
+        local_time = time.time()
+        query_time = local_time - delay
+
+        datas = requests.get('http://192.168.203.155:8888/process?time1=%d&time2=%d'%(query_time - interval, query_time))
+        datas = json.loads(res.text)
+
+        datas = datas[-5:]
+
+        res = []
+        for i in range(0,5):
+            pid = datas[i]['pid']
+            name = datas[i]['pname']
+            cpu = datas[i]['pcpu']
+            mem = datas[i]['pmem']
+            times = datas[i]['time']
+
+            dit={}
+            dit = {'names':'%d\n\n%s'%(pid, name), 'cpu': cpu, 'mem':mem}
+            res.append(dit)
+
+        self.write(json.dumps(res))
